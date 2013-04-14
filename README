@@ -1,0 +1,6 @@
+Aplikasi untuk mengupdate source code openerp pada dua server. 
+
+Teknologi yang digunakan :
+  1. Celery
+  2. RabbitMQ
+  3. Django
