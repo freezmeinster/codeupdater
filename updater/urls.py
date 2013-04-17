@@ -7,12 +7,8 @@ from django.conf.urls import patterns, include, url
 urlpatterns = patterns('',
      url(r'^source-code-update/$', 'updater.code_update.views.index', name='index'),
      url(r'^source-code-update/mulai$', 'updater.code_update.views.mulai', name='mulai'),
+     url(r'^source-code-update/mulai-db$', 'updater.code_update.views.mulai_db', name='mulai_db'),
      url(r'^source-code-update/status$', 'updater.code_update.views.status', name='status'),
-    # url(r'^updater/', include('updater.foo.urls')),
+     url(r'^source-code-update/status-db$', 'updater.code_update.views.status_db', name='status_db'),
 
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
-    # url(r'^admin/', include(admin.site.urls)),
 )

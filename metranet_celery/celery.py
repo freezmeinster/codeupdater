@@ -9,6 +9,7 @@ celery = Celery('metranet_celery.celery' ,
 
 celery.conf.update(
 	CELERY_TASK_RESULT_EXPIRES = 3600,
+	CELERYD_CONCURRENCY=1
 )
 
 if __name__ == "__main__" :

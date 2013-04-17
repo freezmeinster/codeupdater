@@ -154,3 +154,4 @@ LOGGING = {
 }
 
 WORKER = ['db1', 'db2']
+WORKER_DB = ['db1']
