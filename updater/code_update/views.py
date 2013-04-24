@@ -1,18 +1,24 @@
 import json
 from django.shortcuts import render_to_response
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import redirect
 from metranet_celery import tasks
 from django.conf import settings
 from django.http import HttpResponse
+from django.template import RequestContext
 from collections import defaultdict
+
 
 temp = []
 temp_db = []
 temp_clean = []
 
+@login_required
 def index(request):
     return render_to_response("base.html")
 
+@login_required
 def mulai(request):
     del temp[:]
     WR = settings.WORKER
@@ -26,6 +32,7 @@ def mulai(request):
         })
     return redirect("status")
 
+@login_required
 def mulai_db(request):
     del temp_db[:]
     WR = settings.WORKER_DB
@@ -36,6 +43,7 @@ def mulai_db(request):
         })
     return redirect("status_db")
 
+@login_required
 def mulai_clean(request):
     del temp_clean[:]
     WR = settings.WORKER_DB
@@ -47,6 +55,7 @@ def mulai_clean(request):
         })
     return redirect("status_clean")
 
+@login_required
 def status(request):
     data = request.GET.copy()
     if data.get("ajax"):
@@ -90,6 +99,7 @@ def status(request):
         "result" : temp    
     })
 
+@login_required
 def status_db(request):
     data = request.GET.copy()
     if data.get("ajax"):
@@ -115,6 +125,7 @@ def status_db(request):
         "result" : temp_db    
     })
 
+@login_required
 def status_clean(request):
     data = request.GET.copy()
     if data.get("ajax"):
@@ -143,3 +154,24 @@ def status_clean(request):
     return render_to_response("hasil_clean.html",{
         "result" : temp_clean    
     })
+
+def login_page(request):
+    if request.method == "POST" :
+        username = request.POST['username']
+        password = request.POST['password']
+        print username
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request,user)
+                return redirect("index")
+            else:
+                return redirect("login")
+        else:
+            return redirect("login")
+    return render_to_response("login.html",{
+        },context_instance=RequestContext(request))
+
+def logout_page(request):
+    logout(request)
+    return redirect("login")
